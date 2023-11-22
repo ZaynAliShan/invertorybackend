@@ -12,27 +12,21 @@ const REMOTE_CLIENT = process.env.REMOTE_CLIENT;
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["https://inventoryfrontend.netlify.app/", `${REMOTE_CLIENT}`];
+// Make sure REMOTE_CLIENT does not have a trailing slash
+const allowedOrigins = ["https://inventoryfrontend.netlify.app", REMOTE_CLIENT].filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: true,
 };
-app.use(cors(corsOptions));
 
-// app.use(
-//   cors({
-//     origin: "https://inventoryfrontend.netlify.app/",
-//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     credentials: true,
-//   })
-// );
+app.use(cors(corsOptions));
 
 // Importing Middlewares
 const notFound = require("./middlewares/notFound");
