@@ -3,7 +3,12 @@ const { UnauthenticatedError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
 const userAuthMiddleware = (req, res, next) => {
+
+  console.log('Checking Incoming Cookies | Cookies:', req.cookies); // To check the incoming cookies
+
   const token = req.cookies.token;
+
+  console.log('Token Received:', token); // Log the token
 
   // Checking token of user
   if (!token) {
