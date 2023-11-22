@@ -11,13 +11,29 @@ const REMOTE_CLIENT = process.env.REMOTE_CLIENT;
 // Rest of the packages
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "https://inventoryfrontend.netlify.app/",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-  })
-);
+
+const allowedOrigins = ["https://inventoryfrontend.netlify.app/", `REMOTE_CLIENT`];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+};
+app.use(corsOptions)
+
+
+// app.use(
+//   cors({
+//     origin: "https://inventoryfrontend.netlify.app/",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true,
+//   })
+// );
 
 // Importing Middlewares
 const notFound = require("./middlewares/notFound");
