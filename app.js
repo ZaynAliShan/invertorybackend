@@ -12,7 +12,7 @@ const REMOTE_CLIENT = process.env.REMOTE_CLIENT;
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ["https://inventoryfrontend.netlify.app/", `REMOTE_CLIENT`];
+const allowedOrigins = ["https://inventoryfrontend.netlify.app/", `${REMOTE_CLIENT}`];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -24,8 +24,7 @@ const corsOptions = {
   },
   credentials: true,
 };
-app.use(corsOptions)
-
+app.use(cors(corsOptions));
 
 // app.use(
 //   cors({
